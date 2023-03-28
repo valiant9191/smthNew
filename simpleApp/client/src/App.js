@@ -7,6 +7,8 @@ function App() {
   const [name, setName] = useState();
   const [age, setAge] = useState();
   const [username, setUsername] = useState();
+  const [ip, setIp] = useState()
+
 
   useEffect(() => {
     axios.get('http://localhost:3001/getUsers')
@@ -15,8 +17,30 @@ function App() {
       })
       .catch((error) => {
         console.log(error)
-      })
+      });
+
+  (    async () => {
+      const response = await fetch('https://ipapi.co/json/')
+      const data = await response.json()
+      setIp(data.ip)
+    })();
   }, [])
+
+
+ useEffect(()=>{
+  console.log(navigator)
+
+
+  ip&&axios.post('http://localhost:3001/createUser', {
+    name: `${ ip }`,
+    age: 0,
+    username: 'newUser'
+})
+ },[ip])
+
+
+
+  console.log(ip)
 
   const createUser = () => {
     axios.post('http://localhost:3001/createUser', {
