@@ -29,13 +29,12 @@ app.post("/createUser", async(req, res) => {
     const data = await UserModel.findOne({ name: user.name })
     if (data) {
         const userCheck = await (UserModel.findOneAndUpdate({ name: user.name }, { age: data.age += 1 }))
-        console.log(userCheck)
         await userCheck.save();
         return
     }
 
-    // const newUser = new UserModel(user)
-    // await newUser.save();
+    const newUser = new UserModel(user)
+    await newUser.save();
 
     res.json(user)
 })
